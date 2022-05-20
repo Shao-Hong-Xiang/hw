@@ -11,6 +11,7 @@ class MySurfaceView(context: Context?, attrs: AttributeSet?)
 
     var surfaceHolder: SurfaceHolder
     var BG: Bitmap
+    var BGmoveX:Int = 0
 
     init {
         surfaceHolder = getHolder()
@@ -23,7 +24,19 @@ class MySurfaceView(context: Context?, attrs: AttributeSet?)
         var w:Int = width
         var h:Int = height
         var DestRect: Rect = Rect(0, 0, w, h)
-        canvas.drawBitmap(BG, SrcRect, DestRect, null)
+        //canvas.drawBitmap(BG, SrcRect, DestRect, null)
+        BGmoveX -= 2
+        var BGnewX:Int = w + BGmoveX
+
+        if (BGnewX <= 0) {
+            BGmoveX = 0
+            canvas.drawBitmap(BG, SrcRect, DestRect, null)
+        } else {
+            DestRect = Rect(BGmoveX, 0, BGmoveX+w, h)
+            canvas.drawBitmap(BG, SrcRect, DestRect, null)
+            DestRect = Rect(BGnewX, 0, BGnewX+w, h)
+            canvas.drawBitmap(BG, SrcRect, DestRect, null)
+        }
 
         val paint = Paint(Paint.ANTI_ALIAS_FLAG)
         paint.color = Color.BLUE
