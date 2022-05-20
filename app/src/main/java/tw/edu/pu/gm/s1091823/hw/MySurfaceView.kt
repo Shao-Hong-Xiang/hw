@@ -2,6 +2,7 @@ package tw.edu.pu.gm.s1091823.hw
 
 import android.content.Context
 import android.graphics.*
+import android.media.MediaPlayer
 import android.util.AttributeSet
 import android.view.GestureDetector
 import android.view.MotionEvent
@@ -16,6 +17,7 @@ class MySurfaceView(context: Context?, attrs: AttributeSet?)
     var BGmoveX:Int = 0
     var fly:F
     var gDetector: GestureDetector
+    var mper: MediaPlayer
 
     init {
         surfaceHolder = getHolder()
@@ -23,6 +25,7 @@ class MySurfaceView(context: Context?, attrs: AttributeSet?)
         surfaceHolder.addCallback(this)
         fly = F(context!!)
         gDetector = GestureDetector(context, this)
+        mper = MediaPlayer()
     }
 
     fun drawSomething(canvas: Canvas) {
@@ -69,8 +72,12 @@ class MySurfaceView(context: Context?, attrs: AttributeSet?)
         return true
     }
 
-    override fun onShowPress(p0: MotionEvent?) {
-
+    override fun onShowPress(e: MotionEvent?) {
+        if (e!!.x >= 0 && e!!.x <= fly.w && e!!.y >= fly.y && e!!.y <= fly.y + fly.w) {
+            fly.fire = 1
+            mper = MediaPlayer.create(context, R.raw.shoot)
+            mper.start()
+        }
     }
 
     override fun onSingleTapUp(p0: MotionEvent?): Boolean {
